@@ -207,6 +207,114 @@ local states=
         },
 		
     },
+	
+	
+	--OKAY THIS THING IS TOO GOOD AT COMBOING INTO ITSELF IN THE AIR. WE NEED TO MAKE AN AIR VERSION THAT'S SHORTER
+	State{
+        name = "fire_air",
+        tags = {"idle", "force_direction", "spammy"},
+        onenter = function(inst)
+            inst.SoundEmitter:PlaySound("dontstarve/wilson/torch_swing")
+			inst.SoundEmitter:PlaySound("dontstarve/ghost/ghost_haunt")
+			inst.SoundEmitter:PlaySound("dontstarve/ghost/ghost_haunt")
+			
+			--11-10-16 OKAY, LOOKS LIKE I GOTTA ADD LOCOMOTOR COMPS
+			inst:AddComponent("locomotor")
+			
+			--OKAY, I NEED TO DO A COUPLE STARTER SHADOWS AD DEFINED LOCATIONS
+			inst.components.hitbox:MakeFX("lower", ((xrange) / 10), (math.random(3,7) / 10), 0.2,   0.2, 0.2,   0.8, 25, 0,  0, 0, 0,   1, "blocker_sanity_fx", "blocker_sanity_fx")
+			inst.components.hitbox:MakeFX("lower", ((-xrange) / 10), (math.random(3,7) / 10), 0.2,   0.2, 0.2,   0.8, 25, 0,  0, 0, 0,   1, "blocker_sanity_fx", "blocker_sanity_fx")
+			inst.components.hitbox:MakeFX("lower", ((xrange) / 20), (math.random(3,7) / 10), 0.2,   0.2, 0.2,   0.8, 25, 0,  0, 0, 0,   1, "blocker_sanity_fx", "blocker_sanity_fx")
+			inst.components.hitbox:MakeFX("lower", ((-xrange) / 20), (math.random(3,7) / 10), 0.2,   0.2, 0.2,   0.8, 25, 0,  0, 0, 0,   1, "blocker_sanity_fx", "blocker_sanity_fx")
+        end,
+                
+		
+		timeline=
+        {
+			TimeEvent(1*FRAMES, function(inst)
+				DoFire(inst)
+				DoFire(inst)
+			end),
+			
+			TimeEvent(2*FRAMES, function(inst)
+				DoFire(inst)
+				DoFire(inst)
+			end),
+			
+			TimeEvent(3*FRAMES, function(inst)
+				DoFire(inst)
+				
+				inst.components.hitbox:SetDamage(1.0) --LUCARIO'S AURASPHERE
+				inst.components.hitbox:SetAngle(83)
+				inst.components.hitbox:SetBaseKnockback(10)
+				inst.components.hitbox:SetGrowth(50)
+				inst.components.hitbox:SetProperty(6)
+				--DST CHANGE- ADD SUCTION TO THE Y AXIS ONLY -REUSEABLE 10-28-17
+				inst.components.hitbox:AddSuction(0.5, nil, -0.5) 
+				-- inst.components.hitbox.property = 6
+				
+				inst.components.hitbox:SetHitFX("invisible", "dontstarve/common/fireOut") --????
+				inst.SoundEmitter:PlaySound("dontstarve/common/fireBurstLarge")
+				inst.components.hitbox:SetSize(2.8, 0.5)
+				inst.components.hitbox:SpawnHitbox(0.0, xhieght, 0)
+			end),
+			
+			TimeEvent(6*FRAMES, function(inst)
+				inst.components.hitbox:MakeFX("square", 0.0, 0.8, -0.2,   4.0, 0.8,   0.1, 24, 0,   -0.5 + GetRed(inst), -0.5, -0.5 + GetBlue(inst), 1)
+				
+				DoFire(inst)
+				DoFire(inst)
+				inst.components.hitbox:AddNewHit()
+				inst.components.hitbox:SetProperty(6)
+				inst.components.hitbox:SetLingerFrames(3)
+				inst.components.hitbox:SetSize(2.8, 0.5)
+				
+				inst.components.hitbox:SpawnHitbox(0.0, xhieght, 0)
+			end),
+			
+			TimeEvent(9*FRAMES, function(inst)
+				inst.components.hitbox:MakeFX("square", 0.0, 0.8, -0.2,   5.4, 1.0,   0.2, 24, 0,   -0.5 + GetRed(inst), -0.5, -0.5 + GetBlue(inst), 1) ---W-...WHY??? WHY DOES "STICK" NEED TO BE SET TO 1 FOR IT TO SHOW UP???
+				--(fxname, xoffset, yoffset, zoffset, xsize, ysize, alpha, duration, glow)
+				DoFire(inst)
+				DoFire(inst)
+				inst.components.hitbox:AddNewHit()
+				inst.components.hitbox:SetProperty(6)
+				
+				inst.components.hitbox:SpawnHitbox(0.0, xhieght, 0)
+				inst.SoundEmitter:PlaySound("dontstarve/wilson/torch_swing")
+			end),
+			
+			TimeEvent(12*FRAMES, function(inst) --THIS IS ALL I REALLY NEED
+				DoFire(inst)
+				DoFire(inst)
+				inst.components.hitbox:AddNewHit()
+				inst.components.hitbox:SetProperty(6)
+				inst.components.hitbox:SpawnHitbox(0.0, xhieght, 0)
+			end),
+			
+			TimeEvent(15*FRAMES, function(inst)
+				DoFire(inst)
+				DoFire(inst)
+				
+				inst.components.hitbox:SetDamage(3.0)
+				inst.components.hitbox:SetAngle(83)
+				inst.components.hitbox:SetBaseKnockback(50 + (inst.components.stats.storagevar1 * 10))
+				inst.components.hitbox:SetGrowth(50)
+				inst.components.hitbox:SetProperty(6)
+				inst.components.hitbox:SetSize(2.8, 0.7) --10-18-17 THIS ONE NEEDS TO BE HIGHER -REUSEABLE
+				
+				inst.components.hitbox:AddNewHit()
+				inst.components.hitbox:SpawnHitbox(0.0, xhieght+0.1, 0)
+			end),
+
+            TimeEvent(24*FRAMES, function(inst) 
+				inst:CancelAllPendingTasks()
+				inst:Remove()
+				
+			end),
+        },
+		
+    },
 }
 
 

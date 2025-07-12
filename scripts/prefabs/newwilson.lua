@@ -136,6 +136,10 @@ local master_postinit = function(inst)
 		onswaphurtboxes(inst, data.preset)
 	end)
 	
+	inst:ListenForEvent("boomerang_catch", function()
+		inst.components.stats.storagevar5 = 0 --TIME BETWEEN BOOMERANG THROWS
+	end)
+	
 	inst.soundsname = "wilson"
 end
 

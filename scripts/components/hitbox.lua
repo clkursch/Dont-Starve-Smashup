@@ -358,47 +358,8 @@ end
 --9-8 TO MAKE AN INST BLINK A CERTAIN COLOR FOR A GIVEN DURATION  (WHY TF DID I PUT THIS IN THE HITBOX COMPONENT???)
 function Hitbox:Blink(inst, duration, r, g, b, glow, alpha) --I MIGHT ADD ADDITIONAL VARIABLES FOR GLOW COLORS
 	
-	if not r then
-		r = 0
-		g = 0
-		b = 0
-	end
-	
-	if not glow then
-		glow = 0
-	end
-	
-	if not alpha then
-		alpha = 0
-	end
-	
-	--10-18-17 DST CHANGE!!! REUSEABLE - AND SO IS MOST OF THIS NEW FN CHANGES
-	local glowr = glow
-	local glowg = glow
-	local glowb = glow
-	
-	if r < 0 then
-		glowr = -r
-	end
-	if g < 0 then
-		glowr = -g
-	end
-	if b < 0 then
-		glowr = -b
-	end
-	
-	-- inst.AnimState:SetMultColour((alpha + r),(alpha + g),(alpha + b),alpha)
-	inst.AnimState:SetMultColour((0 + r),(0 + g),(0 + b),alpha)
-	-- inst.AnimState:SetAddColour(glow,glow,glow,glow)
-	inst.AnimState:SetAddColour(glowr,glowg,glowb,glow) --DST CHANGE!!
-	
-
-	
-	
-	inst:DoTaskInTime((duration+0)*FRAMES, function(inst) --DST CHANGED +1 TO +0
-		inst.AnimState:SetMultColour(1,1,1,1)
-		inst.AnimState:SetAddColour(0,0,0,0)
-	end)
+	-- 11-2-24 THERE FIXED IT
+	inst.components.visualsmanager:Blink(inst, duration, r, g, b, glow, alpha)
 end
 
 

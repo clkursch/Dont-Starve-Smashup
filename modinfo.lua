@@ -16,8 +16,8 @@ description = description .. "Change game-mode settings and more in the mod's se
 description = "Knock your opponents off the stage to win in this smash-inspired combat rework! \n"
 description = description .."Playable on keyboard or controller. Use the 'Smashup Custom Controls' mod to change your controls. \n \n"
 description = description .."SETUP: Enable this mod on a NEW world and disable caves for best results.\n\n"
-description = description .."=== CHANGE LOG: 1.2.15 === \n"
-description = description .."Compatibility fix \n"
+description = description .."=== CHANGE LOG: 1.2.17 === \n"
+description = description .."Compatibility fix & moveset rebalance \n"
 -- description = description .."Fixed a bug that would sometimes cause the game to crash when creating a world \n"
 -- description = description .."Fixed a bug that increased hitlag for all attacks \n"
 
@@ -57,7 +57,7 @@ description = description .."Compatibility fix \n"
 --https://steamcommunity.com/sharedfiles/filedetails/?id=2298228108
 
 author = "Pickleplayer"
-version = "1.2.15" --"0.912"
+version = "1.2.17" --"0.912"
 api_version = 10
 api_version_dst = 10
 dst_compatible = true
@@ -73,6 +73,8 @@ icon = "modicon.tex"
 priority = 3300
 --PRIORITY SHOULD BE LOWER THAN THE CONTROLS MOD, SO THE GLOBALS CAN INIT
 --BUT HIGHER THAN THE TEMPLATE MOD, WHICH WE WANT TO LOAD LAST SO THE CHARACTER ICON APPEARS AT THE END
+
+--Added two new dummy functions to followcamera.lua
 
 --Updated player_classified and SGnewwoodie for compatability
 

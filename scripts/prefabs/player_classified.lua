@@ -987,6 +987,7 @@ local function fn()
     inst.issleephealing = net_bool(inst.GUID, "health.healthsleep")
     inst.ishealthpulseup = net_bool(inst.GUID, "health.dodeltaovertime(up)", "healthdirty")
     inst.ishealthpulsedown = net_bool(inst.GUID, "health.dodeltaovertime(down)", "healthdirty")
+	inst.lunarburnflags = net_tinybyte(inst.GUID, "health.lunarburnflags", "lunarburnflagsdirty")
     inst.currenthealth:set(100)
     inst.maxhealth:set(100)
 

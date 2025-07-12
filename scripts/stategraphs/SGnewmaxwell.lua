@@ -3853,7 +3853,7 @@ local states=
 			end),
 			
 			
-			TimeEvent(12*FRAMES, function(inst) --9
+			TimeEvent(14*FRAMES, function(inst) --12
 				
 					--4-24-20 HEY DONT FORGET TO SET THIS BEFORE CREATING A PROJECTILE
 					inst.components.hitbox:SetProjectileDuration(35)
@@ -3866,7 +3866,12 @@ local states=
 					skittle.components.stats.team = inst.components.stats.team --1-18-22
 					
 					skittle:SetStateGraph("SGspookfire")
-					skittle.sg:GoToState("fire")
+					--7-12-25 IT'S NOW DIFFERENT IF HE'S IN THE AIR
+					if inst.components.launchgravity:GetIsAirborn() then
+						skittle.sg:GoToState("fire_air")
+					else
+						skittle.sg:GoToState("fire")
+					end
 					skittle.AnimState:PlayAnimation("dontplayone") --lol    
 					
 					local x, y, z = inst.Transform:GetWorldPosition()
@@ -3883,7 +3888,7 @@ local states=
 			end),
 
 			
-            TimeEvent(38*FRAMES, function(inst) 
+            TimeEvent(40*FRAMES, function(inst) 
 				inst.sg:RemoveStateTag("attack")
 				inst.sg:RemoveStateTag("busy")
 				inst.sg:GoToState("idle")
@@ -4380,7 +4385,30 @@ local states=
 				
 				--I GUESS WE JUST CONSTANTLY RE-APPLY HIS COLOR VALUE
 				maxclone:DoPeriodicTask(0, function()
-					maxclone.AnimState:SetMultColour(0,0,0,0.7)
+					if maxclone.components.percent:GetPercent() > 60 then
+						maxclone.AnimState:SetMultColour(0,0,0,0.40)
+					else
+						maxclone.AnimState:SetMultColour(0,0,0,0.7)
+					end
+				end)
+				
+				maxclone:DoPeriodicTask(15*FRAMES, function()
+					maxclone.components.percent:DoSilentDamage(-1)
+					if maxclone.components.percent:GetPercent() > 75 then
+						if maxclone:IsValid() then
+							-- TheWorld:PushEvent("ms_playerdespawnanddelete", maxclone)
+							local x, y, z = maxclone.Transform:GetWorldPosition()
+							SpawnPrefab("die_fx").Transform:SetPosition(x, y+1, z)
+							maxclone.SoundEmitter:PlaySound("dontstarve/ghost/ghost_use_bloodpump")
+							TheSim:FindFirstEntityWithTag("anchor").components.gamerules:KOPlayer(maxclone, "silent")
+						end
+					elseif maxclone.components.percent:GetPercent() > 60 then
+						-- maxclone.components.hitbox:MakeFX("lower", 0, 2, 0.2,   0.2, 0.2,   0.8, 25, 0,  0, 0, 0,   0, "blocker_sanity_fx", "blocker_sanity_fx")
+						maxclone.components.hitbox:MakeFX("smoke_puff_3", -0.0, 2, -0.2,   1.5, 1.5,   0.8, 8, 0,  0.0, 0.0, 0.0)
+					end
+					
+					--inst.components.hitbox:MakeFX("lower", ((xrange) / 10), (math.random(3,7) / 10), 0.2,   0.2, 0.2,   0.8, 25, 0,  0, 0, 0,   1, "blocker_sanity_fx", "blocker_sanity_fx")
+					--TheSim:FindFirstEntityWithTag("anchor").components.gamerules:KOPlayer(inst, "silent")
 				end)
 
 				--1-5-22 IM BETTING ONLY THE HOST NEEDS TO RUN THIS
@@ -4518,12 +4546,44 @@ local states=
 					local anchor = TheSim:FindFirstEntityWithTag("anchor")
 					anchor.components.gamerules:SpawnPlayer(maxclone, x+(3*inst.components.launchgravity:GetRotationValue()), y, z, true) --TRUE TO SPECIFY CUSTOM SPAWN
 					maxclone.sg:GoToState("rise")
+					--maxclone.components.percent:DoSilentDamage(-20)
 				end
 				
 			end),
 			
 			TimeEvent(5*FRAMES, function(inst)  --12
-				inst.components.hitbox:MakeFX("idle_loop", 2.8, 0, 0.3,   1.7, 0.7,   0.7, 15, 0,  0, 0, 0,   1, "nightmarefuel", "nightmarefuel") 			
+				inst.components.hitbox:MakeFX("idle_loop", 2.8, 0, 0.3,   1.7, 0.7,   0.7, 15, 0,  0, 0, 0,   1, "nightmarefuel", "nightmarefuel")
+			end),
+			
+			TimeEvent(20*FRAMES, function(inst)  
+				inst.components.percent:DoSilentDamage(-1)
+			end),
+			TimeEvent(22*FRAMES, function(inst)  
+				inst.components.percent:DoSilentDamage(-1)
+			end),
+			TimeEvent(25*FRAMES, function(inst)  
+				inst.components.percent:DoSilentDamage(-1)
+			end),
+			TimeEvent(28*FRAMES, function(inst)  
+				inst.components.percent:DoSilentDamage(-1)
+			end),
+			TimeEvent(30*FRAMES, function(inst)  
+				inst.components.percent:DoSilentDamage(-1)
+			end),
+			TimeEvent(32*FRAMES, function(inst)  
+				inst.components.percent:DoSilentDamage(-1)
+			end),
+			TimeEvent(35*FRAMES, function(inst)  
+				inst.components.percent:DoSilentDamage(-1)
+			end),
+			TimeEvent(38*FRAMES, function(inst)  
+				inst.components.percent:DoSilentDamage(-1)
+			end),
+			TimeEvent(40*FRAMES, function(inst)  
+				inst.components.percent:DoSilentDamage(-1)
+			end),
+			TimeEvent(42*FRAMES, function(inst)  
+				inst.components.percent:DoDamage(-1)
 			end),
 			
 			TimeEvent(45*FRAMES, function(inst) 

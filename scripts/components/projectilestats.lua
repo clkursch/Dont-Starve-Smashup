@@ -116,6 +116,7 @@ function ProjectileStats:OnUpdate(dt)
 		
 		if math.abs(mypos - ownerpos) <= 1 and math.abs(myposy - (ownerposy + yreturnmod)) <= 1 then
 			self.inst.SoundEmitter:PlaySound("dontstarve/wilson/equip_item") --12-4-21 LOL THIS MAKES MUCH MORE SENSE
+			self.master:PushEvent("boomerang_catch")
 			self.inst:Remove()
 		end
 	end

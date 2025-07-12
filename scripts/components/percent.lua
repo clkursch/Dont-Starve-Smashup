@@ -315,6 +315,13 @@ function Percent:DoSilentDamage(amount, overtime, cause, ignore_invincible)
     self:SetVal(self.currentpercent + amount, cause)
     local new_percent = self:GetPercent()
 	
+	--THIS SHOULD PROBABLY BE HERE TOO
+	if self.inst.customhpbadgepercent and TheWorld.ismastersim then
+		self.inst.customhpbadgepercent:set(new_percent) --9-1-17 LETS TRY THIS
+	else
+		-- print("NO CUSTOMHPBADGE DETECTED")
+	end
+	
 	self.inst:PushEvent("percentdelta", {oldpercent = old_percent, newpercent = self:GetPercent(), overtime=overtime, cause=cause})
 
 	if self.ondelta then

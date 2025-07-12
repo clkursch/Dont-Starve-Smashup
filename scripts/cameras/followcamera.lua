@@ -88,6 +88,15 @@ function FollowCamera:EnableBoatCamera()
     --DUMMY
 end
 
+--10/29/24
+function FollowCamera:AddListener(val, val)
+    --DUMMY
+end
+
+function FollowCamera:RemoveListener(val, val)
+    --DUMMY
+end
+
 
 function FollowCamera:GetRightVec()
     local right = (self.headingtarget + 90) * DEGREES

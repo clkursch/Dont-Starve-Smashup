@@ -2337,7 +2337,7 @@ local states=
             -- inst.AnimState:SetMultColour(0.5,0.5,0.5,0.5)
 			--inst.AnimState:PlayAnimation("chop_pre")
 			inst.AnimState:PlayAnimation("rolling")
-			inst.components.hitbox:Blink(inst, 4,   1, 1, 1,   0.2) --Blink(inst, duration, r, g, b, glow)
+			inst.components.visualsmanager:Blink(inst, 4,   1, 1, 1,   0.2) --Blink(inst, duration, r, g, b, glow)
 			
 			-- inst.task_1 = inst:DoPeriodicTask(0.1, function(inst)
 					-- inst.Physics:SetMotorVel(14, 0, 0) --10
@@ -2915,12 +2915,23 @@ local states=
 				inst.components.hitbox:SetGrowth(100)
 
 				inst.components.hitbox:SetSize(0.6)
-				inst.components.hitbox:SetLingerFrames(3)
+				inst.components.hitbox:SetLingerFrames(2)
 				
 				inst.components.hitbox:MakeDisjointed()
-				inst.components.hitbox:SpawnHitbox(-1.2, 0.35, 0) 
+				inst.components.hitbox:SpawnHitbox(-1.5, 0.35, 0) 
 				inst.components.hitbox:SpawnHitbox(-0.4, 0.35, 0) 
-				inst.sg:RemoveStateTag("abouttoattack") 
+			end),
+			
+			
+			TimeEvent(11*FRAMES, function(inst) 
+				inst.components.hitbox:SetDamage(7)
+				inst.components.hitbox:SetSize(0.6)
+				inst.components.hitbox:SetLingerFrames(4)
+				inst.components.hitbox:SetAngle(80)
+				
+				inst.components.hitbox:MakeDisjointed()
+				inst.components.hitbox:SpawnHitbox(-1.5, 0.35, 0) 
+				inst.components.hitbox:SpawnHitbox(-0.4, 0.35, 0) 
 			end),
 			
 			
@@ -2954,7 +2965,7 @@ local states=
 			end),
 			
 			TimeEvent(7*FRAMES, function(inst) 
-				inst.components.hitbox:SetDamage(11)
+				inst.components.hitbox:SetDamage(13)
 				inst.components.hitbox:SetAngle(270)
 				inst.components.hitbox:SetBaseKnockback(10)
 				inst.components.hitbox:SetGrowth(90)
@@ -2962,9 +2973,9 @@ local states=
 				inst.SoundEmitter:PlaySound("dontstarve/creatures/krampus/kick_whoosh")
 				
 				inst.components.hitbox:SetLingerFrames(1)
-				inst.components.hitbox:SetSize(0.7, 0.6) --0.5,0.5
+				inst.components.hitbox:SetSize(0.7, 0.8) --0.5,0.5
 				
-				inst.components.hitbox:SpawnHitbox(1.2, 0.4, 0) 
+				inst.components.hitbox:SpawnHitbox(1.2, 0.6, 0) 
 			end),
 			
 			TimeEvent(8*FRAMES, function(inst) 
@@ -4631,7 +4642,7 @@ local states=
         tags = {"busy", "scary"}, --},
 
         onenter = function(inst)
-			inst.components.hitbox:SetDamage(14) --SWEETSPOTS GET +5 ADDED TO THEM
+			inst.components.hitbox:SetDamage(18) --SWEETSPOTS GET +5 ADDED TO THEM --11-2-24 NEVERMIND NO MORE SOURSPOT
 			inst.AnimState:PlayAnimation("usmash_charge")
         end,
 		
@@ -4696,8 +4707,9 @@ local states=
 			inst.AnimState:PlayAnimation("usmash")  
 			
 			--STORE THEM AS 2 DIFFERENT VALUES. 1 FOR SOURSPOT, 1 FOR SWEETSPOT
-			inst.components.stats.storagevar1 = inst.components.hitbox.dam
-			inst.components.stats.storagevar2 = inst.components.hitbox.dam + 4
+			-- inst.components.stats.storagevar1 = inst.components.hitbox.dam
+			-- inst.components.stats.storagevar2 = inst.components.hitbox.dam + 4
+			--NEVERMIND, NO MORE SOURSPOT
         end,
 		
         timeline=
@@ -4713,7 +4725,7 @@ local states=
 				inst.components.hitbox:SpawnHitbox(0.0, 0.6, 0)
 				
 				--BIG HIT
-				inst.components.hitbox:SetDamage(inst.components.stats.storagevar2) --THE NORMAL VALUE BUT +5
+				-- inst.components.hitbox:SetDamage(inst.components.stats.storagevar2) --THE NORMAL VALUE BUT +5
 				inst.components.hitbox:SetSize(0.9)
 				
 				inst.components.hitbox:MakeDisjointed()
@@ -4731,7 +4743,7 @@ local states=
 				-------------------------------------------------------------------
 				-- inst.components.hitbox:SetBlockDamage(5)
 				--inst.components.hitbox:SetKnockback(17, 20)
-				inst.components.hitbox:SetDamage(inst.components.stats.storagevar2)--17
+				-- inst.components.hitbox:SetDamage(inst.components.stats.storagevar2)
 				inst.components.hitbox:SetBaseKnockback(50)
 				inst.components.hitbox:SetSize(0.9)
 				------------------------------------------------------------------
@@ -4750,7 +4762,7 @@ local states=
 				
 				--BACK TO THE BIG HIT
 				-- inst.components.hitbox:SetBlockDamage(5)
-				inst.components.hitbox:SetDamage(inst.components.stats.storagevar2)--17
+				-- inst.components.hitbox:SetDamage(inst.components.stats.storagevar2)
 				inst.components.hitbox:SetSize(0.9)
 				
 				inst.components.hitbox:MakeDisjointed()
@@ -4764,7 +4776,7 @@ local states=
 			
 			TimeEvent(6*FRAMES, function(inst)
 				inst.AnimState:SetTime(9*FRAMES)
-				inst.components.hitbox:SetDamage(inst.components.stats.storagevar2)--17
+				-- inst.components.hitbox:SetDamage(inst.components.stats.storagevar2)
 				inst.components.hitbox:SetSize(0.9)
 				
 				inst.components.hitbox:MakeDisjointed()

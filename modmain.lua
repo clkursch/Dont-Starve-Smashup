@@ -1129,6 +1129,13 @@ AddComponentPostInit("meteorshower", function(self) --BIRDTAG
 	end
 end)
 
+--6-23-25 - SEEMS TO BREAK WORLDGEN. GUT IT
+AddComponentPostInit("wagpunk_manager", function(self)
+	function self:TryToSpawnFences()
+		--GUTTED
+	end
+end)
+
 
 --WHAT EVEN IS THIS?? I TOTALLY FORGOT WHAT THIS IS AND WHAT IT DOES
 local StaticComponentUpdates = {}

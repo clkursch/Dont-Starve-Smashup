@@ -3034,25 +3034,18 @@ local states=
 				inst.components.hitbox:MakeFX("woosh1down", 0.1, 0.95, 0.1,   1.6, 1.6,   0.9, 5, 0,   0,0,0, 1)
 			end),
 			
-			-- TimeEvent(2*FRAMES, function(inst) 
-				-- inst.SoundEmitter:PlaySound("dontstarve/creatures/krampus/kick_whoosh")
-				-- inst.components.hitbox:MakeFX("woosh1down", 0.35, 0.75, 0.2,   2.0, 1.4,   0.0, 5, 1,   0.2,0.2,0.2, 1)
-				-- inst.components.hitbox:MakeFX("woosh1down", -0.35, 0.75, 0.2,   2.0, 1.4,   0.0, 5, 1,   1,1,1, 1)
-			-- end),
-			
 			TimeEvent(4*FRAMES, function(inst) 
-				inst.components.hitbox:SetDamage(7)
-				inst.components.hitbox:SetAngle(270) --AAAAH WHATEVER, ILL FIX IT LATER
-				inst.components.hitbox:SetBaseKnockback(10)
+				inst.components.hitbox:SetDamage(8)
+				inst.components.hitbox:SetAngle(270) 
+				inst.components.hitbox:SetBaseKnockback(15)
 				inst.components.hitbox:SetGrowth(130)
-				-- inst.components.hitbox:SpawnHitbox(0, -0.5, 0) 
-				-- inst.components.hitbox:SpawnHitbox(0, 0.5, 0) 
+				inst.components.hitbox:SetLingerFrames(1)
 				inst.SoundEmitter:PlaySound("dontstarve/creatures/krampus/kick_whoosh")
 				
-				inst.components.hitbox:SetSize(0.5, 0.45)
+				inst.components.hitbox:SetSize(0.5, 0.65)
 				--inst.components.hitbox:SetSize(15) --12-1 FOR TEST PURPOSES ONLY
 				
-				inst.components.hitbox:SpawnHitbox(0, -0.3, 0) 
+				inst.components.hitbox:SpawnHitbox(0, -0.2, 0) 
 				-- inst.components.hitbox:SpawnHitbox(0, 0.5, 0) 
 					
 			end),
@@ -3093,13 +3086,13 @@ local states=
 				inst.components.hitbox:SetGrowth(100)
 				inst.components.hitbox:SetSize(1.1, 0.35) --(0.75, 0.5) -- (1.5, 1)  --1.5
 				
-				inst.components.hitbox:SetLingerFrames(2)
+				inst.components.hitbox:SetLingerFrames(1)
 				
 				inst.components.hitbox:SpawnHitbox(0.55, 0.35, 0) 
 				
 				
 				inst.components.hitbox:SetDamage(5)
-				inst.components.hitbox:SetAngle(361)
+				inst.components.hitbox:SetAngle(80)--361
 				inst.components.hitbox:SetBaseKnockback(15)
 				inst.components.hitbox:SetGrowth(100)
 				inst.components.hitbox:SetSize(0.75, 0.35) --(0.75, 0.5) -- (1.5, 1)  --1.5
@@ -3109,20 +3102,17 @@ local states=
 				inst.components.hitbox:SpawnHitbox(0.35, 0.3, 0)
 			end),
 			
-            TimeEvent(20*FRAMES, function(inst) 
-				-- inst.sg:GoToState("air_idle")
+            TimeEvent(16*FRAMES, function(inst) 
 				inst.AnimState:PlayAnimation("idle_air")
 			end),
 			
-			TimeEvent(23*FRAMES, function(inst) 
-				inst.sg:GoToState("air_idle")
-			
+			TimeEvent(18*FRAMES, function(inst) 
+				inst.sg:RemoveStateTag("busy")
 			end),
-        },
-        
-        events=
-        {
-
+			
+			TimeEvent(20*FRAMES, function(inst) 
+				inst.sg:GoToState("air_idle")
+			end),
         },
     },
 	
@@ -3135,7 +3125,8 @@ local states=
 			
             inst.AnimState:PlayAnimation("wickeruair")
             inst.SoundEmitter:PlaySound("dontstarve/creatures/krampus/bag_swing")
-			inst.components.launchgravity:SetLandingLag(10)
+			-- inst.components.launchgravity:SetLandingLag(10)
+			inst.components.launchgravity:SetLandingLag(4, nil, "uair_pst")
         end,
 		
 		onexit = function(inst)
@@ -3151,10 +3142,10 @@ local states=
 				inst.components.hitbox:SetGrowth(0)
 				inst.components.hitbox:SetSize(0.8)
 				
-				inst.components.hitbox:AddSuction(0.4, 0, 0) --power, x, y
+				inst.components.hitbox:AddSuction(0.6, 0, 0.7) --power, x, y
 				
 				inst.components.hitbox:MakeDisjointed()
-				inst.components.hitbox:SpawnHitbox(0, 2.1, 0) --2.5
+				inst.components.hitbox:SpawnHitbox(0.5, 1.2, 0) --2.5
 				inst.SoundEmitter:PlaySound("dontstarve/creatures/krampus/kick_whoosh")
 			end),
 			
@@ -3168,7 +3159,7 @@ local states=
 			
 			TimeEvent(7*FRAMES, function(inst) 
 				inst.components.hitbox:AddNewHit()
-				inst.components.hitbox:AddSuction(0.4, 0, 1.2) --power, x, y
+				inst.components.hitbox:AddSuction(0.6, 0, 0.7) --power, x, y
 				inst.components.hitbox:MakeDisjointed()
 				inst.components.hitbox:SpawnHitbox(0, 2.1, 0) 
 				inst.SoundEmitter:PlaySound("dontstarve/creatures/krampus/kick_whoosh")
@@ -3176,7 +3167,6 @@ local states=
 			
 			TimeEvent(9*FRAMES, function(inst) 
 				inst.components.hitbox:AddNewHit()
-				-- inst.components.hitbox:AddSuction(0.4, 0, 1.2) --power, x, y
 				inst.components.hitbox:MakeDisjointed()
 				inst.components.hitbox:SpawnHitbox(0, 2.1, 0) 
 				inst.SoundEmitter:PlaySound("dontstarve/creatures/krampus/kick_whoosh")
@@ -3184,7 +3174,6 @@ local states=
 			
 			TimeEvent(12*FRAMES, function(inst) 
 				inst.components.hitbox:AddNewHit()
-				-- inst.components.hitbox:AddSuction(0.4, 0, 1.2) --power, x, y
 				inst.components.hitbox:MakeDisjointed()
 				inst.components.hitbox:SpawnHitbox(0, 2.1, 0) 
 				inst.SoundEmitter:PlaySound("dontstarve/creatures/krampus/kick_whoosh")
@@ -3193,8 +3182,8 @@ local states=
 			TimeEvent(15*FRAMES, function(inst) 
 				inst.components.hitbox:AddNewHit()
 				
-				inst.components.hitbox:SetDamage(4)
-				inst.components.hitbox:SetAngle(80) --AAAAH WHATEVER, ILL FIX IT LATER
+				inst.components.hitbox:SetDamage(5)
+				inst.components.hitbox:SetAngle(80)
 				inst.components.hitbox:SetBaseKnockback(45) --50 THIS KILLS WAY TOO EARLY
 				inst.components.hitbox:SetGrowth(120) --140
 				inst.components.hitbox:SetSize(1)
@@ -3217,6 +3206,43 @@ local states=
             end),
         },
     },
+	
+	--10-30-24 - LET'S RAISE THIS CEILING A BIT...
+	State{
+        name = "uair_pst",
+        tags = {"attack", "busy", "force_direction"},
+        
+        onenter = function(inst)
+			
+            inst.AnimState:PlayAnimation("landing")
+			inst.components.hitbox:SetDamage(5)
+			inst.components.hitbox:SetAngle(50)--245
+			inst.components.hitbox:SetBaseKnockback(30)
+			inst.components.hitbox:SetGrowth(70)
+			inst.components.hitbox:SetSize(1)
+			inst.components.hitbox:SetLingerFrames(2)
+			
+			inst.components.hitbox:AddSuction(0.8, 0.5, 0) --power, x, y
+			
+			inst.components.hitbox:MakeDisjointed()
+			inst.components.hitbox:SpawnHitbox(0, 2.1, 0)
+			inst.SoundEmitter:PlaySound("dontstarve/creatures/krampus/kick_whoosh")
+            
+        end,
+		
+        
+        timeline=
+        {
+            TimeEvent(5*FRAMES, function(inst) 
+				inst.sg:RemoveStateTag("busy")
+			end),
+			
+			TimeEvent(8*FRAMES, function(inst) 
+				inst.sg:GoToState("idle")
+			end),
+        },
+    },
+	
 	
 	State{
         name = "jab1",
@@ -3439,26 +3465,27 @@ local states=
 	
 	State{
         name = "dtilt",
-        tags = {"attack", "notalking", "busy"},
+        tags = {"attack", "force_direction", "busy"},
         
         onenter = function(inst)
-			inst.AnimState:PlayAnimation("dtilt")
+			
 			inst.SoundEmitter:PlaySound("dontstarve/creatures/krampus/kick_whoosh")
             inst:PushEvent("swaphurtboxes", {preset = "ducking"})
         end,
         
         timeline=
         {
-			TimeEvent(2*FRAMES, function(inst) 
-				inst.components.hitbox:SetDamage(5) 
+			TimeEvent(3*FRAMES, function(inst)
+				inst.AnimState:PlayAnimation("dtilt")
+				inst.components.hitbox:SetDamage(7) 
 				inst.components.hitbox:SetAngle(80)
 				inst.components.hitbox:SetBaseKnockback(20)  --15
 				inst.components.hitbox:SetGrowth(100)
-				inst.components.hitbox:SetSize(0.55, 0.3)
-				inst.components.hitbox:SpawnHitbox(1, 0.2, 0) 
+				inst.components.hitbox:SetSize(0.65, 0.3)
+				inst.components.hitbox:SpawnHitbox(0.9, 0.2, 0) 
 			end),
 			
-            TimeEvent(11*FRAMES, function(inst) --7
+            TimeEvent(9*FRAMES, function(inst) --7
 				inst.sg:GoToState("idle")				
 			end),
         },
@@ -3480,7 +3507,7 @@ local states=
         timeline=
         {
             --TimeEvent(7*FRAMES, function(inst) inst.components.combat:DoAttack(inst.sg.statemem.target) inst.sg:RemoveStateTag("abouttoattack") end),
-			TimeEvent(3*FRAMES, function(inst)
+			TimeEvent(2*FRAMES, function(inst)
 				
 				inst.components.hitbox:SetDamage(10) --18 RYU'S
 				inst.components.hitbox:SetAngle(85)
@@ -3490,20 +3517,20 @@ local states=
 				-- inst.components.hitbox:SetSize(1.5) --FINALLY GETTING AROUND TO MAKING THIS FAIR
 				-- inst.components.hitbox:SpawnHitbox(0.5, 1, 0)
 				
-				--SOURSPOT?
-				inst.components.hitbox:SetDamage(8)
-				inst.components.hitbox:SetSize(0.25)
+				--SOURSPOT? --NAH
+				inst.components.hitbox:SetDamage(10)
+				inst.components.hitbox:SetSize(0.3)
 				inst.components.hitbox:MakeDisjointed()
 				inst.components.hitbox:SpawnHitbox(0.6, 0.35, 0)
 				
-				inst.components.hitbox:SetDamage(10)
+				-- inst.components.hitbox:SetDamage(10)
 				inst.components.hitbox:SetSize(0.7)
 				inst.components.hitbox:MakeDisjointed()
 				inst.components.hitbox:SpawnHitbox(0.7, 0.35, 0)
 
 			end),
 			
-			TimeEvent(4*FRAMES, function(inst) 
+			TimeEvent(3*FRAMES, function(inst) 
 				inst.components.hitbox:MakeDisjointed()
 				inst.components.hitbox:SetSize(1.0)
 				inst.components.hitbox:SpawnHitbox(0.65, 1, 0)
@@ -3551,20 +3578,20 @@ local states=
 			end),
 			
 			
-			--10-21-20 WAIT HOW LONG HAS THIS WHOLE TIMEEVENT BEEN DISABLED??? I DIDNT EVEN KNOW
-			TimeEvent(7*FRAMES, function(inst)
-				inst.components.hitbox:MakeFX("spike1", 1.5, 0, 0.3,   -1.2, 0.8,   1, 8, 0,  0, 0, 0,   0, "deerclops_icespike", "deerclops_icespike")
+			TimeEvent(6*FRAMES, function(inst)
+				
 				inst.components.hitbox:SetDamage(9)
 				inst.components.hitbox:SetAngle(49)
-				inst.components.hitbox:SetBaseKnockback(70) --50
+				inst.components.hitbox:SetBaseKnockback(70)
 				inst.components.hitbox:SetGrowth(35)
 				
-				inst.components.hitbox:SetSize(1.0)
-				inst.components.hitbox:SetLingerFrames(2)
+				
+				inst.components.hitbox:SetSize(0.4, 1)
+				inst.components.hitbox:SetLingerFrames(0)
 				--inst.components.hitbox:SetProperty(5)
 				--ADD SOME UPWARD SUCTION SO THE PROJECTILE IS MORE LIKELY TO SLIDE UNDER THEM
 				-- inst.components.hitbox:AddSuction(0.7, 1.2, 1.4) --power, x, y
-				inst.components.hitbox:AddSuction(0.7, 1.2, nil) --power, x, y
+				inst.components.hitbox:AddSuction(0.7, 1.4, nil) --power, x, y
 				inst.components.hitbox:MakeDisjointed()
 				
 				
@@ -3572,8 +3599,6 @@ local states=
 					local opponent = inst.components.stats.opponent
 					if not opponent.sg:HasStateTag("blocking") and not opponent:HasTag("nofreezing") then
 						opponent:PushEvent("freeze")
-						-- opponent.components.launchgravity:Launch(-8, 15, 0)
-						
 						--7-30-17 THIS WILL PREVENT THE ICE SPAM. HOPEFULLY
 						opponent:AddTag("nofreezing")
 						opponent:DoTaskInTime(2, function()
@@ -3582,14 +3607,33 @@ local states=
 					end
 				end)
 				
-				inst.components.hitbox:SpawnHitbox(0.8, 0.6, 0) 
+				inst.components.hitbox:SpawnHitbox(0.2, 1.4, 0) 
 			end),
+			
+			
+			TimeEvent(7*FRAMES, function(inst)
+				inst.components.hitbox:MakeFX("spike1", 1.5, 0, 0.3,   -1.2, 0.8,   1, 8, 0,  0, 0, 0,   0, "deerclops_icespike", "deerclops_icespike")
+				local camprefab = TheSim:FindFirstEntityWithTag("cameraprefab") --SO IT PLAYS A BIT CLOSER
+				camprefab.SoundEmitter:PlaySound("dontstarve/wilson/attack_icestaff")
+				
+				inst.components.hitbox:AddEmphasis(3)
+				-- inst.components.hitbox:SetHitFX("default", "dontstarve/common/gem_shatter")
+				inst.components.hitbox:SetSize(1.1)
+				inst.components.hitbox:SetLingerFrames(2)
+				inst.components.hitbox:MakeDisjointed()
+				inst.components.hitbox:SpawnHitbox(0.85, 0.6, 0) 
+			end),
+			
 			
 			
 			
 			TimeEvent(8*FRAMES, function(inst)
 				inst:PushEvent("swaphurtboxes", {preset = "forward"})
 				inst.components.hurtboxes:ShiftHurtboxes(0.5, 0)
+				inst.components.hitbox:AddEmphasis(3)
+				inst.components.hitbox:SetSize(1.0, 0.3)
+				inst.components.hitbox:MakeDisjointed()
+				inst.components.hitbox:SpawnHitbox(1.3, 0.2, 0) 
 			end),
 			
 			
@@ -3601,8 +3645,8 @@ local states=
 				
 				-- inst.SoundEmitter:PlaySound("dontstarve/wilson/attack_icestaff")
 				-- TheFocalPoint.SoundEmitter:PlaySound("dontstarve/wilson/attack_icestaff")
-				local camprefab = TheSim:FindFirstEntityWithTag("cameraprefab")
-				camprefab.SoundEmitter:PlaySound("dontstarve/wilson/attack_icestaff")
+				-- local camprefab = TheSim:FindFirstEntityWithTag("cameraprefab")
+				
 				
 				inst.components.hitbox:SetDamage(4)
 				inst.components.hitbox:SetAngle(90)

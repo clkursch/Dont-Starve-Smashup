@@ -933,6 +933,10 @@ function FighterHud:CloseControllerCrafting()
     self.controls.yotb_notification:ToggleController(false)
 end
 
+function FighterHud:CloseCrafting()
+    --7-12-25 ADDED AND GUTTED
+end
+
 function FighterHud:ShowPlayerStatusScreen(click_to_close, onclosefn)
     if self.playerstatusscreen == nil then
         self.playerstatusscreen = PlayerStatusScreen(self.owner)

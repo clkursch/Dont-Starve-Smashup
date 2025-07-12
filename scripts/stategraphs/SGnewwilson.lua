@@ -22,6 +22,10 @@ local events=
 	EventHandler("update_stategraph", function(inst)
 		if not TheWorld.ismastersim then
 			return end
+			
+		if (inst.components.stats.storagevar5 > 0) then
+			inst.components.stats.storagevar5 = inst.components.stats.storagevar5 - 1 
+		end
 		
 		local wantstoblock = inst:HasTag("wantstoblock")
 		local is_tryingtoblock = inst.sg:HasStateTag("tryingtoblock")
@@ -4571,6 +4575,14 @@ local states=
 			
             TimeEvent(10*FRAMES, function(inst) 
 				if inst.sg:HasStateTag("wasgrounded") and not inst.sg:HasStateTag("recovery") then
+					inst.sg:AddStateTag("can_attack")
+					inst.sg:AddStateTag("can_special_attack")
+				end
+			
+			end),
+			
+			TimeEvent(16*FRAMES, function(inst) 
+				if inst.sg:HasStateTag("wasgrounded") and not inst.sg:HasStateTag("recovery") then
 					inst.sg:RemoveStateTag("attack")
 					inst.sg:RemoveStateTag("busy")
 				end
@@ -4635,6 +4647,10 @@ local states=
 			inst.components.stats.storagevar3 = 0
 			inst.components.stats.storagevar4 = 0 --SELF DAMAGE
             
+			-- local xvel, yvel = inst.Physics:GetVelocity()
+			-- if yvel > 8 then
+				-- inst.components.jumper:AirStall(1, 2)
+			-- end
         end,
 		
 		timeline=
@@ -5030,7 +5046,7 @@ local states=
             inst.AnimState:PlayAnimation("nspecial_retry")
 			-- inst.AnimState:PlayAnimation("nspecial")
 			
-			if inst.components.stats.storagereference1 and inst.components.stats.storagereference1:IsValid() then
+			if (inst.components.stats.storagereference1 and inst.components.stats.storagereference1:IsValid()) or inst.components.stats.storagevar5 > 0 then
 				inst.sg:GoToState("boomerang_dud")
 			end
 			-- print("NOT FEELING SO HOT", inst.components.stats.storagereference1)
@@ -5098,7 +5114,7 @@ local states=
 				projectile.Transform:SetScale(1.25, 0.7, 1)
 				projectile:RemoveTag("deleteonhit")
 				projectile.components.projectilestats:DoBoomerang(0.7, 0.3, 7, 5) --(flytime, accel, maxreturnspeedx, maxreturnspeedy)
-				
+				inst.components.stats.storagevar5 = 300 --TIME BETWEEN BOOMERANG THROWS
 			end),
 			
             TimeEvent(21*FRAMES, function(inst)  --25
@@ -5306,13 +5322,13 @@ local states=
 				
 			end),
 			
-			TimeEvent(12*FRAMES, function(inst) inst.components.locomotor:SlowFall(0.2, 4) end),
+			TimeEvent(12*FRAMES, function(inst) inst.components.locomotor:SlowFall(0.2, 5) end),
 			
 			TimeEvent(15*FRAMES, function(inst)
 				inst.sg:AddStateTag("can_grab_ledge")
 			end),
 			
-            TimeEvent(20*FRAMES, function(inst) --25
+            TimeEvent(25*FRAMES, function(inst) --11-2-24
 				inst.sg:RemoveStateTag("attack")
 				inst.sg:RemoveStateTag("busy")
 				inst.sg:GoToState("air_idle")
@@ -5758,7 +5774,7 @@ local states=
 				inst.components.hitbox:SetDamage(inst.components.stats.storagevar2) --TAKE THE DAMAGE SAVED AT THE TOP
 				inst.components.hitbox:SetAngle(80) 
 				inst.components.hitbox:SetBaseKnockback(50)
-				inst.components.hitbox:SetGrowth(140) 
+				inst.components.hitbox:SetGrowth(150) 
 				inst.components.hitbox:SetSize(1)
 				inst.components.hitbox:SetHitFX("invisible", "dontstarve_DLC001/creatures/deciduous/drake_pop_large")
 				
