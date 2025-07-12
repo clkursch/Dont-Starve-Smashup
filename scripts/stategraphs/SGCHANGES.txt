@@ -1,0 +1,107 @@
+EventHandler("singlejump", function(inst, data)
+		local is_busy = inst.sg:HasStateTag("busy")
+		local can_jump = inst.sg:HasStateTag("can_jump")
+		local can_oos = inst.sg:HasStateTag("canoos")
+		local can_ood = inst.sg:HasStateTag("can_ood")
+		local used_first_jump = inst.components.jumper.jumping == 1 and inst.components.jumper.doublejumping == 0
+		local is_airborn = inst.components.launchgravity:GetIsAirborn()
+		
+		--1-5 NEW JUMP SYSTEM SO CRAP DOESNT HIT THE FAN WHEN TRYING TO LEAVEGROUND() ON LAUNCHES
+		if (can_jump and not is_airborn) or (not is_busy and not is_airborn) or ((can_jump or can_oos or can_ood) and not is_airborn) then
+			inst.sg:GoToState("singlejump")
+		end
+	end),
+	
+	
+	
+	
+--11-28-20 CPU VERSION OF SINGLEJUMP
+	State{
+        name = "singlejump",
+		tags = {"can_usmash", "can_upspec", "no_running", "no_blocking", "jumping", "busy", "savejump"}, --YOU KNOW WHAT, IM GONNA ADD BUSY AND SEE WHAT HAPPENS 1-3-17   --FIX IT SO ITS NOT BUSY
+        
+        onenter = function(inst)
+			inst.AnimState:PlayAnimation("jump") --jump
+			inst.components.locomotor:Clear()
+        end,
+        
+		timeline =
+        {
+			TimeEvent(1*FRAMES, function(inst) 
+				inst.components.jumper:Jump(inst)
+				-- inst.sg:RemoveStateTag("busy") 
+				inst.sg:RemoveStateTag("can_usmash")
+				
+				--A NEW IMPROVED FULLHOP REGISTRATION.
+				inst:AddTag("listenforfullhop")
+				inst:DoTaskInTime(1*FRAMES, function(inst) --SPIDERS ARE SPECIAL, THEIR REGISTRY GETS CKECKED IN ONLY ONE FRAME
+					inst.components.jumper:CheckForFullHop()
+					inst.components.stats.jumpspec = "full"
+				end)
+			end),
+			TimeEvent(2*FRAMES, function(inst) 
+				inst.sg:RemoveStateTag("busy")
+			end),
+			
+			TimeEvent(7*FRAMES, function(inst) 
+				inst.sg:RemoveStateTag("savejump") --1-14-17 SO HE DOESNT INSTANTLY WASTE HIS DOUBLE JUMP
+			end),
+			
+			TimeEvent(17*FRAMES, function(inst) 
+				-- inst:PushEvent("swaphurtboxes", {preset = "air_idle"})
+			end),
+		},
+
+        events=
+        {
+            EventHandler("animover", function(inst)
+				inst.sg:GoToState("air_idle") 
+			end ),
+        },
+    },
+	
+	
+	
+	
+	
+	
+--11-28-20 FOR CPU INPUTS
+				if data.key == "fsmash" then
+				-- inst.sg:GoToState("attack")
+					inst.sg:GoToState("fsmash_start")
+				elseif data.key == "usmash" then
+					inst.sg:GoToState("usmash_start")
+					
+					
+					
+					
+					
+	if data.key2 and data.key2 ~= inst.Transform:GetRotation() then inst.components.locomotor:TurnAround() end --11-7-17 IF PLAYER HAS SOMEHOW CHAGED DIRECTION, TURN THEM BACK AROUND
+				inst.sg:GoToState("fspecial")
+				
+				
+				
+				--FOR ROLLING --MERGED OVER EXISTING ROLL LINES
+		if ((not is_busy or can_oos) and not was_running and not is_airborn) or must_roll then
+			-- print("LETS ROCK AND ROLL")
+			if data.key == facedir then
+				inst.sg:GoToState("roll_forward")
+			elseif data.key == "left" or data.key == "right" then
+				--FACING THE WRONG DIRECTION, BUT IS STILL A VALID DIRECTION
+				inst.components.locomotor:TurnAround()
+				inst.sg:GoToState("roll_forward")
+			-- elseif data.key == "none" then --LATE-8-11-17 ALRIGHT, NO MORE OF THIS. BUFFER MUST HAVE A DIRECTION, OR NO ROLLING ALLOWED
+			--11-29-20 THESE VERSIONS ARE FOR AI ONLY
+			elseif data.key == "forward" then
+				inst.components.locomotor:FaceTarget(inst.components.stats.opponent)
+				inst.sg:GoToState("roll_forward")
+			elseif data.key == "backward" then
+				inst.components.locomotor:FaceTarget(inst.components.stats.opponent)
+				inst.components.locomotor:TurnAround()
+				inst.sg:GoToState("roll_forward")
+			
+			else
+				--ITS A TRAP! DONT REACT TO THIS
+				inst.components.hitbox:MakeFX("half_circle_backward_woosh", 0.3, 1.0, 0.1,  -1.5, 2.1,   1, 6, 0) --IF YOU SEE THIS, SOMETHING WENT WRONG
+			end
+		end
